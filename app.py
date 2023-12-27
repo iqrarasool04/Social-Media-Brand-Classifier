@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask import render_template_string
+from flask import render_template_string, send_file
 import pandas as pd
 import joblib
 
@@ -49,7 +49,9 @@ def classify():
             print("Results saved to:", output_path)
 
             # Redirect to the display_results route
-            return redirect(url_for('display_results'))
+            # return redirect(url_for('display_results'))
+            return send_file(output_path, as_attachment=True)
+
 
             # return redirect(url_for('download', filename='output_results.xlsx'))
 
@@ -71,42 +73,7 @@ def display_results():
 if __name__ == '__main__':
     app.run(debug=True)
 
-# app.py
 
-# from flask import Flask, render_template, request
-# import pandas as pd
-# import joblib
-
-# app = Flask(__name__)
-
-# # Load the trained model
-# model = joblib.load('random_forest_model.joblib')
-
-# @app.route('/')
-# def home():
-#     return render_template('index.html')
-
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     # Get the input data from the form
-#     username = request.form['username']
-#     captions = request.form['captions']
-#     hashtags = request.form['hashtags']
-
-#     # Create a DataFrame with the input data
-#     input_data = pd.DataFrame({'username': [username], 'captions': [captions], 'hashtags': [hashtags]})
-
-#     # Use all columns except the first as input features
-#     features_df = input_data.iloc[:, 1:]
-
-#     # Predict the category using the trained model
-#     prediction = model.predict(features_df)
-
-#     # Render the result template with the predicted category
-#     return render_template('result.html', prediction=prediction[0])
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
 
 
 
